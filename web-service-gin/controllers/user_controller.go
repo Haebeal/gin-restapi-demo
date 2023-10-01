@@ -10,27 +10,25 @@ import (
 
 // ユーザー一覧を取得
 func GetUsers(c *gin.Context) {
-	// ユーザーサービスの呼び出し
-	users := services.GetUsers()
+	users := []models.User{}
+	services.DbEngin.Find(&users)
 	c.JSON(http.StatusOK, users)
 }
 
 // ユーザーを作成
 func CreateUser(c *gin.Context) {
 	user := models.User{}
-	err := c.Bind(&user)
-	if err != nil {
-		c.String(http.StatusBadRequest, "Bad request")
+	if err := c.Bind(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	err = services.CreateUser(&user)
-	if err != nil {
-		c.String(http.StatusInternalServerError, "Sarver Error")
+
+	if err := services.DbEngin.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "database error"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"status": "ok",
-	})
+
+	c.JSON(http.StatusOK, user)
 }
 
 // ユーザーを取得

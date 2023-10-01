@@ -8,7 +8,9 @@ import (
 	"gorm.io/gorm"
 )
 
-var DbEngin *gorm.DB
+var (
+	DbEngin *gorm.DB
+)
 
 func Init() {
 	dsn := "host=localhost port=5432 user=postgres password=root dbname=grom_db sslmode=disable"
