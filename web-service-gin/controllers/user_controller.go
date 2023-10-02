@@ -42,7 +42,17 @@ func GetUser(c *gin.Context) {
 
 // ユーザーを更新
 func UpdateUser(c *gin.Context) {
+	user := models.User{}
+	id := c.Param("id")
 
+	// JSONのバインド
+	if err := c.BindJSON(&user); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "batRequest"})
+	}
+
+	// idが一致するレコードを更新
+	services.DbEngin.Model(&user).Where("ID = ?", id).Updates(user)
+	c.JSON(http.StatusOK, user)
 }
 
 // ユーザーを削除
