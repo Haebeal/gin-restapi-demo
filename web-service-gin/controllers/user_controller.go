@@ -33,7 +33,11 @@ func CreateUser(c *gin.Context) {
 
 // ユーザーを取得
 func GetUser(c *gin.Context) {
+	user := models.User{}
+	id := c.Param("id")
 
+	services.DbEngin.Where("ID = ?", id).First(&user)
+	c.JSON(http.StatusOK, user)
 }
 
 // ユーザーを更新

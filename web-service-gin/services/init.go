@@ -13,7 +13,7 @@ var (
 )
 
 func Init() {
-	dsn := "host=localhost port=5432 user=postgres password=root dbname=grom_db sslmode=disable"
+	dsn := "host=localhost port=5432 user=postgres password=root dbname=gorm_db sslmode=disable"
 	var err error
 	DbEngin, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
