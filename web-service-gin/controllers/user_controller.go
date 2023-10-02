@@ -57,5 +57,9 @@ func UpdateUser(c *gin.Context) {
 
 // ユーザーを削除
 func DeleteUser(c *gin.Context) {
+	user := models.User{}
+	id := c.Param("id")
 
+	// idが一致するレコードの論理削除
+	services.DbEngin.Where("ID = ?", id).Delete(&user)
 }
